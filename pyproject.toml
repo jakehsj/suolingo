@@ -1,0 +1,5 @@
+# uv workspace root (virtual: not a package itself).
+# All Python projects under services/ share one lockfile and one .venv at the repo root,
+# so editors (VS Code, PyCharm) find a single interpreter at ./.venv.
+[tool.uv.workspace]
+members = ["services/*"]

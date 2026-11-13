@@ -1,0 +1,10 @@
+{
+    "name": "Suolingo.Tracking.Meta",
+    "rootNamespace": "Suolingo.Tracking.Meta",
+    "references": [
+        "Suolingo.Tracking",
+        "Oculus.VR"
+    ],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

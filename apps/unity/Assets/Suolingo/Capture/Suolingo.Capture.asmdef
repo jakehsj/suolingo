@@ -1,0 +1,9 @@
+{
+    "name": "Suolingo.Capture",
+    "rootNamespace": "Suolingo.Capture",
+    "references": [
+        "Suolingo.Tracking"
+    ],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

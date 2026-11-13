@@ -15,7 +15,7 @@ The original project proposal describes learning content, hand-tracking-based co
 - Target hardware: Meta Quest 3. All four team members have a device.
 - Experience: MR, showing learning content over the real environment.
 - Client: Unity Editor **6000.3.26f1 (LTS)**.
-- Hand tracking: Meta SDK. Specific packages and versions have not been selected or verified against the editor version.
+- Hand tracking: Meta SDK — `com.meta.xr.sdk.core` **207.0.1** on Unity OpenXR **1.16.1** (selected during Milestone 1; see §2.1). On-device behavior is not yet verified.
 - Backend: Python/FastAPI, developed within this project and running separately from Unity.
 - Matching engine: currently a black box; research will be conducted separately. No algorithm is selected.
 - Initial goal: **select an expression → watch a demonstration → perform it → receive an evaluation → retry**.
@@ -24,6 +24,20 @@ The original project proposal describes learning content, hand-tracking-based co
 - Team: four people, including one Unity-experienced member and the user with backend experience. Other assignments are suggestions, not commitments.
 - There is no established source of sign demonstrations, reference motion data, or sign-language review yet.
 - Deadline: the second week of December 2026. Exact date is open.
+
+### 2.1 Milestone 1 implementation choices (November 3, 2026)
+
+These were made while implementing Milestone 1. They can be revisited, but changes should be recorded here.
+
+- **Meta XR Core SDK 207.0.1**, the latest version on Meta's registry on November 3, 2026, requires Unity ≥ 6000.0.66f2. It resolves, compiles, and builds an Android APK with 6000.3.26f1. Interaction SDK and MR Utility Kit were not added because Milestone 1 does not need them.
+- **Unity OpenXR 1.16.1** is the XR provider. It is the version bundled with and recommended by 6000.3, and the Meta SDK targets OpenXR. The *Meta XR* feature group and *Meta Quest Support* are enabled.
+- **URP 17.3** comes from the Universal 3D template. Meta's Project Setup Tool fixes, including MSAA 4x, HDR off, and stereo instancing, were applied.
+- **Hand data source:** raw `OVRPlugin.GetHandState` with the **OpenXR 26-joint skeleton**, not OVRSkeleton/SyntheticHand transforms. Untracked samples carry no pose.
+- **Hand-tracking frequency: HIGH** because signs include fast motion. Lower it if performance measurements require it.
+- **Passthrough: Required**. The app supports Quest 3/3S, with controllers and hands enabled.
+- **Python 3.13 with uv** uses a root-level uv workspace (`services/*` members) with one committed `uv.lock` and one `.venv` at the repository root, so editors detect a single interpreter. FastAPI, Pydantic v2, and uvicorn are used for the backend.
+- **Recording format:** draft contract `suolingo.hand-recording` 0.1.0 ([contracts/hand-recording](../contracts/hand-recording/README.md)). The Pydantic models are the schema source, and the generated JSON Schema is committed.
+- **Milestone 1 capture defaults:** 3 s countdown and 4 s capture, with one sample per rendered frame. Start with a 1 s index-pinch hold, or Space in the Editor, until the learning panel exists. These values are configurable and are not final decisions.
 
 ## 3. Initial scope
 
@@ -116,7 +130,7 @@ Use participant IDs rather than names in development datasets. Keep reference-bu
 
 ## 6. Matching and content research
 
-The initial working interpretation is **evaluation against the expression selected by the lesson**, rather than unconstrained recognition of any sign. Confirm this distinction if research changes the task.
+The learning-focused direction was reaffirmed on November 3, 2026 after considering camera-based translation of another person's signing. That translation service is outside the current scope. Matching targets **evaluation against the expression selected by the lesson**, using available Quest tracking signals; it does not certify unobserved facial or other linguistic components. The algorithm and supported expressions remain open decisions.
 
 Research must determine:
 
@@ -134,7 +148,7 @@ A demonstration video is not automatically a 3D reference-motion dataset. Tempor
 
 ## 7. Proposed repository layout
 
-Only the documentation currently exists; the following is a target layout to discuss during implementation.
+Milestone 1 created `apps/unity/`, `services/matching/`, `contracts/`, and `tests/fixtures/` following this layout. `content/`, `tools/`, and the backend `matching`/`content` modules have not been created yet; add them when they have real contents.
 
 ```text
 suolingo/
@@ -201,13 +215,12 @@ Hosting recommendations are provisional as of November 3, 2026. Verify provider 
 ## 10. Open decisions
 
 - Exact demo date and success criteria.
-- Meta SDK packages/versions and compatibility verification.
-- Unity UI framework and rendering/package setup.
-- Python version and dependency tooling.
+- On-device verification of Meta SDK 207.0.1 hand data: coordinate space, scale, tracking-loss behavior, and frame rate. See the checklist in `contracts/hand-recording/README.md`.
+- Unity UI framework for learning panels. The Milestone 1 status panel uses uGUI as a diagnostic display only; interaction packages such as the Meta Interaction SDK are not yet chosen.
 - Demonstration source, usage permissions, and sign-language review process.
 - Target expressions and their number.
 - Matching algorithm, dataset, thresholds, compute needs, and quality metrics.
-- Capture duration, sampling rate, coordinate normalization, and final data schema.
+- Capture duration, sampling rate, coordinate normalization, and final data schema. Milestone 1 provides defaults and a draft schema only.
 - Video versus 3D demonstration scope after the first prototype.
 - Real-time evaluation scope, transport, and latency target.
 - Local progress and quiz scope for the final submission.
@@ -217,7 +230,7 @@ Hosting recommendations are provisional as of November 3, 2026. Verify provider 
 ## 11. Guidance for implementing agents
 
 - Read this plan and the roadmap before acting; inspect the actual repository state rather than assuming scaffolding exists.
-- The current request was documentation and planning, not implementation or deployment.
+- Milestone 1 (environment and observable hand input) is implemented; see [SETUP.md](SETUP.md). Later milestones are not implemented.
 - Respect the fixed Unity editor version. Do not select SDK versions or algorithms silently.
 - Keep mocked evaluation visibly distinct from a real, validated engine.
 - Prioritize the single-expression loop and reproducible motion input before expanding features.

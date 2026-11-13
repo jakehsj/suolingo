@@ -8,12 +8,19 @@ The initial learning loop is: **select an expression â†’ watch a demonstration â
 
 - [Project plan](docs/PROJECT_PLAN.md): confirmed decisions, proposed architecture, implementation boundaries, and open questions.
 - [Roadmap](docs/ROADMAP.md): proposed milestones, acceptance criteria, and possible team contributions.
+- [Setup](docs/SETUP.md): reproducible development environment, build, recording retrieval, and backend commands.
 
 Read both documents before implementing a feature. A proposal or open question is not an approved technical decision. Update the documents when decisions are made; do not silently turn assumptions into requirements.
 
 ## Current status
 
-Planning stage as of November 3, 2026. The repository does not yet contain a Unity project or backend implementation. No matching algorithm or hosting provider has been selected.
+Milestone 1 (environment and observable hand input) was implemented on November 3, 2026, and has **not yet been verified on a headset**.
+
+- `apps/unity`: Quest 3 MR passthrough app with Meta hand tracking, a tracking-status panel, and optional JSON export of hand motion.
+- `services/matching`: FastAPI service that validates recordings and reports input quality. Sign evaluation is not yet available, including mock evaluation.
+- `contracts/hand-recording`: draft recording contract 0.1.0.
+
+No matching algorithm or hosting provider has been selected. To set up and run the project, see [docs/SETUP.md](docs/SETUP.md).
 
 Confirmed technologies:
 

@@ -1,0 +1,22 @@
+{
+    "name": "Suolingo.Editor",
+    "rootNamespace": "Suolingo.Editor",
+    "references": [
+        "Suolingo.Tracking",
+        "Suolingo.Tracking.Meta",
+        "Suolingo.Capture",
+        "Suolingo.Presentation",
+        "Oculus.VR",
+        "Oculus.VR.Editor",
+        "Unity.XR.Management",
+        "Unity.XR.Management.Editor",
+        "Unity.XR.OpenXR",
+        "Unity.XR.OpenXR.Editor",
+        "Unity.XR.OpenXR.Features.MetaQuestSupport"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

@@ -1,0 +1,487 @@
+{
+  "$defs": {
+    "Capture": {
+      "additionalProperties": false,
+      "properties": {
+        "countdown_seconds": {
+          "title": "Countdown Seconds",
+          "type": "number"
+        },
+        "requested_duration_seconds": {
+          "title": "Requested Duration Seconds",
+          "type": "number"
+        },
+        "start_realtime_seconds": {
+          "title": "Start Realtime Seconds",
+          "type": "number"
+        },
+        "display_refresh_rate_hz": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Display Refresh Rate Hz"
+        },
+        "end_reason": {
+          "title": "End Reason",
+          "type": "string"
+        },
+        "time_base": {
+          "title": "Time Base",
+          "type": "string"
+        }
+      },
+      "required": [
+        "countdown_seconds",
+        "requested_duration_seconds",
+        "start_realtime_seconds",
+        "display_refresh_rate_hz",
+        "end_reason",
+        "time_base"
+      ],
+      "title": "Capture",
+      "type": "object"
+    },
+    "CoordinateSystem": {
+      "additionalProperties": false,
+      "properties": {
+        "space": {
+          "title": "Space",
+          "type": "string"
+        },
+        "handedness": {
+          "const": "left-handed",
+          "title": "Handedness",
+          "type": "string"
+        },
+        "units": {
+          "const": "meters",
+          "title": "Units",
+          "type": "string"
+        },
+        "axes": {
+          "title": "Axes",
+          "type": "string"
+        },
+        "rotation_format": {
+          "const": "quaternion-xyzw",
+          "title": "Rotation Format",
+          "type": "string"
+        }
+      },
+      "required": [
+        "space",
+        "handedness",
+        "units",
+        "axes",
+        "rotation_format"
+      ],
+      "title": "CoordinateSystem",
+      "type": "object"
+    },
+    "Frame": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "description": "Seconds since capture start.",
+          "title": "T",
+          "type": "number"
+        },
+        "unity_frame": {
+          "title": "Unity Frame",
+          "type": "integer"
+        },
+        "head": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Head pose in the same space as hands; null when not tracked."
+        },
+        "left": {
+          "$ref": "#/$defs/HandSample"
+        },
+        "right": {
+          "$ref": "#/$defs/HandSample"
+        }
+      },
+      "required": [
+        "t",
+        "unity_frame",
+        "head",
+        "left",
+        "right"
+      ],
+      "title": "Frame",
+      "type": "object"
+    },
+    "HandSample": {
+      "additionalProperties": false,
+      "description": "One hand in one frame. Pose fields are present only when ``tracked`` is true.",
+      "properties": {
+        "tracked": {
+          "description": "SDK reports pose/joint data for this sample as usable.",
+          "title": "Tracked",
+          "type": "boolean"
+        },
+        "high_confidence": {
+          "title": "High Confidence",
+          "type": "boolean"
+        },
+        "input_state_valid": {
+          "description": "Pinch/pointer data usable.",
+          "title": "Input State Valid",
+          "type": "boolean"
+        },
+        "system_gesture": {
+          "description": "Hand is performing an OS system gesture.",
+          "title": "System Gesture",
+          "type": "boolean"
+        },
+        "sample_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "SDK sample timestamp (seconds, SDK clock).",
+          "title": "Sample Time"
+        },
+        "hand_scale": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hand Scale"
+        },
+        "finger_high_confidence": {
+          "items": {
+            "type": "boolean"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Finger High Confidence",
+          "type": "array"
+        },
+        "pinch_strength": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Pinch Strength",
+          "type": "array"
+        },
+        "root": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "joint_positions": {
+          "anyOf": [
+            {
+              "items": {
+                "description": "[x, y, z] in meters",
+                "items": {
+                  "type": "number"
+                },
+                "maxItems": 3,
+                "minItems": 3,
+                "type": "array"
+              },
+              "maxItems": 26,
+              "minItems": 26,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Positions"
+        },
+        "joint_rotations": {
+          "anyOf": [
+            {
+              "items": {
+                "description": "[x, y, z, w] unit quaternion",
+                "items": {
+                  "type": "number"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "type": "array"
+              },
+              "maxItems": 26,
+              "minItems": 26,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Joint Rotations"
+        }
+      },
+      "required": [
+        "tracked",
+        "high_confidence",
+        "input_state_valid",
+        "system_gesture",
+        "sample_time",
+        "hand_scale",
+        "finger_high_confidence",
+        "pinch_strength",
+        "root",
+        "joint_positions",
+        "joint_rotations"
+      ],
+      "title": "HandSample",
+      "type": "object"
+    },
+    "Pose": {
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "description": "[x, y, z] in meters",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 3,
+          "minItems": 3,
+          "title": "Position",
+          "type": "array"
+        },
+        "rotation": {
+          "description": "[x, y, z, w] unit quaternion",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Rotation",
+          "type": "array"
+        }
+      },
+      "required": [
+        "position",
+        "rotation"
+      ],
+      "title": "Pose",
+      "type": "object"
+    },
+    "Producer": {
+      "additionalProperties": false,
+      "properties": {
+        "app": {
+          "title": "App",
+          "type": "string"
+        },
+        "app_version": {
+          "title": "App Version",
+          "type": "string"
+        },
+        "unity_version": {
+          "title": "Unity Version",
+          "type": "string"
+        },
+        "platform": {
+          "title": "Platform",
+          "type": "string"
+        },
+        "device_model": {
+          "title": "Device Model",
+          "type": "string"
+        }
+      },
+      "required": [
+        "app",
+        "app_version",
+        "unity_version",
+        "platform",
+        "device_model"
+      ],
+      "title": "Producer",
+      "type": "object"
+    },
+    "TrackingSource": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "sdk_wrapper_version": {
+          "title": "Sdk Wrapper Version",
+          "type": "string"
+        },
+        "runtime_version": {
+          "title": "Runtime Version",
+          "type": "string"
+        },
+        "joint_layout": {
+          "const": "openxr-ext-hand-tracking-26",
+          "title": "Joint Layout",
+          "type": "string"
+        },
+        "tracking_origin": {
+          "title": "Tracking Origin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "sdk_wrapper_version",
+        "runtime_version",
+        "joint_layout",
+        "tracking_origin"
+      ],
+      "title": "TrackingSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "suolingo.hand-recording",
+      "title": "Schema",
+      "type": "string"
+    },
+    "schema_version": {
+      "pattern": "^0\\.1\\.\\d+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "recording_id": {
+      "minLength": 1,
+      "title": "Recording Id",
+      "type": "string"
+    },
+    "created_at_utc": {
+      "format": "date-time",
+      "title": "Created At Utc",
+      "type": "string"
+    },
+    "participant_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Pseudonymous ID; never a real name.",
+      "title": "Participant Id"
+    },
+    "expression_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Expression Id"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Notes"
+    },
+    "producer": {
+      "$ref": "#/$defs/Producer"
+    },
+    "tracking_source": {
+      "$ref": "#/$defs/TrackingSource"
+    },
+    "coordinate_system": {
+      "$ref": "#/$defs/CoordinateSystem"
+    },
+    "capture": {
+      "$ref": "#/$defs/Capture"
+    },
+    "joints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Joints",
+      "type": "array"
+    },
+    "fingers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Fingers",
+      "type": "array"
+    },
+    "frames": {
+      "items": {
+        "$ref": "#/$defs/Frame"
+      },
+      "minItems": 1,
+      "title": "Frames",
+      "type": "array"
+    },
+    "summary": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Client-computed summary. Informational only; consumers recompute it from frames.",
+      "title": "Summary"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "recording_id",
+    "created_at_utc",
+    "participant_id",
+    "expression_id",
+    "notes",
+    "producer",
+    "tracking_source",
+    "coordinate_system",
+    "capture",
+    "joints",
+    "fingers",
+    "frames"
+  ],
+  "title": "Suolingo hand recording",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://suolingo.dev/contracts/hand-recording/0.1.0"
+}

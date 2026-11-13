@@ -14,6 +14,12 @@ See [the project plan](PROJECT_PLAN.md) for confirmed decisions and open questio
 
 Target: first week of November.
 
+Status (November 3, 2026): **implemented; awaiting on-device verification.** The Unity project, packages, Quest settings, scene, status panel,
+capture/export, FastAPI service, recording validation and quality CLI, and draft contract are in place. Unity EditMode tests,
+backend tests, and a headless Android APK build pass on macOS. The acceptance criteria below still require
+(1) one real Quest 3 recording inspected with `suolingo-recording inspect`, (2) the device checklist in
+`contracts/hand-recording/README.md`, and (3) a second team member reproducing [SETUP.md](SETUP.md), including on Windows.
+
 Deliverables:
 
 - Create the Unity project using 6000.3.26f1 and select compatible Meta packages after verification.

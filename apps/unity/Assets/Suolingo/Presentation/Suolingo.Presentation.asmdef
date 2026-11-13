@@ -1,0 +1,12 @@
+{
+    "name": "Suolingo.Presentation",
+    "rootNamespace": "Suolingo.Presentation",
+    "references": [
+        "Suolingo.Tracking",
+        "Suolingo.Capture",
+        "Unity.InputSystem",
+        "UnityEngine.UI"
+    ],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

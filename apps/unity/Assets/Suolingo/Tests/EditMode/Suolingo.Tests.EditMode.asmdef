@@ -1,0 +1,21 @@
+{
+    "name": "Suolingo.Tests.EditMode",
+    "rootNamespace": "Suolingo.Tests",
+    "references": [
+        "Suolingo.Tracking",
+        "Suolingo.Capture",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ]
+}

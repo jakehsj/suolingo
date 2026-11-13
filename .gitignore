@@ -1,0 +1,13 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Hand-motion recordings pulled from headsets (bulk data is not stored in Git; see docs/PROJECT_PLAN.md §5)
+/recordings/
